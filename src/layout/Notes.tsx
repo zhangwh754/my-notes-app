@@ -18,7 +18,7 @@ export function NotesLayout() {
       <MiddleNav />
 
       {/* 右侧主内容区 - 笔记详情 */}
-      <main className="flex-1 flex flex-col bg-light overflow-y-auto ">
+      <main className="flex-1 bg-light overflow-auto scroll-bar">
         <Outlet />
       </main>
     </div>

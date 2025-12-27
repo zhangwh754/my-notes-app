@@ -2,21 +2,26 @@
 import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
-import content from "./Tiptap-content.ts";
+import { getArticle } from "../data";
 
 const createCommands = (editor: Editor) => ({
   bold: () => editor.chain().focus().toggleBold().run(),
   italic: () => editor.chain().focus().toggleItalic().run(),
 });
 
-const Tiptap = () => {
+const Tiptap = ({ id }: { id?: string }) => {
+  if (!id) return null;
+
+  const editorContent = getArticle(+id)?.content;
+  if (!editorContent) return null;
+
   const editor = useEditor({
     extensions: [StarterKit],
-    content: content,
+    content: editorContent,
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none",
+          "prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none prose-p:my-0",
       },
     },
   });
@@ -26,15 +31,15 @@ const Tiptap = () => {
   const commands = createCommands(editor);
 
   return (
-    <div className="relative h-full overflow-auto scroll-bar">
-      <EditorContent className="tiptap" editor={editor} />
+    <>
+      <EditorContent editor={editor} />
 
       <BubbleMenu editor={editor}>
         <button className="btn btn-primary" onClick={() => commands.bold()}>
           Bold
         </button>
       </BubbleMenu>
-    </div>
+    </>
   );
 };
 

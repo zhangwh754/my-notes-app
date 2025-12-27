@@ -1,13 +1,12 @@
-import type { ReactNode } from "react";
 import { useParams } from "react-router";
 import Tiptap from "../components/Tiptap";
 
-export default function Detail({ children }: { children: ReactNode }) {
+export default function Detail() {
   const params = useParams<{ id: string }>();
 
   return (
-    <>
-      <Tiptap />
-    </>
+    <div className="p-5">
+      <Tiptap id={params.id} />
+    </div>
   );
 }
