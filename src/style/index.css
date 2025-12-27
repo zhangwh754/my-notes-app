@@ -1,8 +1,14 @@
 @import "tailwindcss";
 @plugin "daisyui";
+@plugin "@tailwindcss/typography";
+@plugin "tailwind-scrollbar";
 
 @theme {
   --color-dark: #2e3235;
   --color-light: #fff;
   --color-grey: #f5f5f5;
+}
+
+.scroll-bar {
+  @apply scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-700;
 }
