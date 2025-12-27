@@ -3,6 +3,7 @@ import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import { getArticle } from "../data";
+import { useEffect } from "react";
 
 const createCommands = (editor: Editor) => ({
   bold: () => editor.chain().focus().toggleBold().run(),
@@ -29,6 +30,10 @@ const Tiptap = ({ id }: { id?: string }) => {
   if (!editor) return null;
 
   const commands = createCommands(editor);
+
+  useEffect(() => {
+    editor.chain().focus(0);
+  }, []);
 
   return (
     <>
