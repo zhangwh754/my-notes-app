@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import Tiptap from "../components/Tiptap";
+import Tiptap from "../components/RichEditor/Tiptap";
 
 export default function Detail() {
   const params = useParams<{ id: string }>();

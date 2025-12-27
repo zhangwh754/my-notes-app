@@ -1,11 +1,27 @@
 import { Outlet } from "react-router";
+import { parseOutlineFromTiptapJSON } from "../data";
+import Articles from "../data/Article-Content";
+import { OutlinePreview } from "../components/Outline/Outline";
+import { useMemo } from "react";
 
 const SideNav = () => {
   return <aside className="w-48 bg-dark"></aside>;
 };
 
 const MiddleNav = () => {
-  return <aside className="w-56 border-r border-grey bg-light"></aside>;
+  const outlines = useMemo(() => {
+    return Articles.map((article) => parseOutlineFromTiptapJSON(article));
+  }, []);
+
+  return (
+    <aside className="w-56 p-4 flex flex-col border-r border-gray bg-light">
+      {outlines.map((item) => {
+        return (
+          <OutlinePreview key={item.id} id={item.id} outline={item.outlines} title={item.title} />
+        );
+      })}
+    </aside>
+  );
 };
 
 export function NotesLayout() {
