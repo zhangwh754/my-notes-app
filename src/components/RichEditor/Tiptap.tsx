@@ -29,7 +29,14 @@ const Tiptap = ({ id }: { id?: string }) => {
         type: articleResult.type,
         content: articleResult.content,
       });
+
       editor.current.chain().focus(0);
+
+      // 延迟滚动，确保内容已渲染
+      setTimeout(() => {
+        const mainElement = document.querySelector("main");
+        mainElement && mainElement.scrollTo({ top: 0, behavior: "smooth" });
+      }, 50);
     }
   }, [id]);
 
