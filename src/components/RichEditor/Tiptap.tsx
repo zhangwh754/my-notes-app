@@ -4,9 +4,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { getArticle } from "../../data";
 import { useEffect } from "react";
 
-const Tiptap = ({ id }: { id?: string }) => {
-  if (!id) return null;
-
+const Tiptap = ({ id }: { id: string }) => {
   const editor = useEditor({
     extensions: [StarterKit],
     editorProps: {
@@ -23,7 +21,7 @@ const Tiptap = ({ id }: { id?: string }) => {
       const content = getArticle(id);
       editor.commands.setContent(content || "");
       const mainElement = document.querySelector("main");
-      mainElement && mainElement.scrollTo({ top: 0, behavior: "smooth" });
+      if (mainElement) mainElement.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [id, editor]);
 

@@ -17,19 +17,23 @@ A React-based notes application using Tiptap rich text editor, React Router v7, 
 ## Architecture
 
 ### Routing Structure
+
 - Uses React Router v7 with lazy-loaded route components
 - Route definitions in `src/route/index.tsx`
 - Lazy imports in `src/route/component.ts`
 - Main layout: `src/layout/Notes.tsx` wraps child routes with `<Outlet />`
 
 Routes:
+
 - `/login` - Login page
 - `/` - Notes layout with home page (index)
 - `/detail/:id` - Article detail page
 - `/setting` - Settings page
 
 ### Three-Column Layout
+
 `NotesLayout` component structure:
+
 1. **Left sidebar** (`SideNav`) - Type navigation (currently placeholder)
 2. **Middle column** (`MiddleNav`) - Article list with outline previews
 3. **Main content area** - Article detail view with rich text editor
@@ -37,12 +41,15 @@ Routes:
 ### Content Management
 
 #### Article Data
+
 - Articles stored in `src/data/Article-Content.tsx` as static JSON
 - Each article has: `id`, `title`, `type: "doc"`, `content: JSONContent[]`
 - Content format: Tiptap JSON structure (from `@tiptap/react`)
 
 #### Outline Generation
+
 `src/data/index.tsx` contains:
+
 - `getArticle(id)` - Fetch article by ID
 - `parseOutlineFromTiptapJSON(doc)` - Parses article content to extract headings and paragraphs for outline preview
 - `OutlineItem` type - Shape of outline items (heading/paragraph with level and text)
@@ -50,10 +57,12 @@ Routes:
 ### Tiptap Editor
 
 Located in `src/components/RichEditor/`:
+
 - `Tiptap.tsx` - Main editor component using `@tiptap/react` with StarterKit
 - `EditorCommands.tsx` - Editor toolbar (currently commented out in usage)
 
 Key implementation details:
+
 - Editor is initialized with empty content, then populated via `useEffect` using `editor.commands.setContent()`
 - Auto-focuses at start of document after loading: `editor.chain().focus(0)`
 - Uses Tailwind Typography classes for styling: `prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl`
@@ -61,6 +70,7 @@ Key implementation details:
 ### Outline Preview Component
 
 `src/components/Outline/Outline.tsx`:
+
 - Renders article preview cards in middle column
 - Shows active state based on current route param (`params.id`)
 - Truncates paragraph text to 50 chars

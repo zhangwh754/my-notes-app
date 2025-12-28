@@ -1,3 +1,4 @@
+import { type JSONContent } from "@tiptap/react";
 import Articles, { type Article } from "./Article-Content";
 
 export const getArticle = (id: string) => {
@@ -6,10 +7,10 @@ export const getArticle = (id: string) => {
   return Articles.find((article) => article.id === id);
 };
 
-function getText(node: any): string {
+function getText(node: JSONContent): string {
   if (!node.content) return "";
   return node.content
-    .map((c: any) => (c.type === "text" ? c.text : getText(c)))
+    .map((c: JSONContent) => (c.type === "text" ? c.text : getText(c)))
     .join("");
 }
 
@@ -23,7 +24,7 @@ export type OutlineItem = {
 export function parseOutlineFromTiptapJSON(doc: Article) {
   const result: OutlineItem[] = [];
 
-  for (let [index, node] of doc.content.entries()) {
+  for (const [index, node] of doc.content.entries()) {
     if (result.length === 5) break;
 
     if (node.type === "heading") {

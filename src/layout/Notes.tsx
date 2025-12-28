@@ -17,7 +17,12 @@ const MiddleNav = () => {
     <aside className="w-56 p-4 flex flex-col border-r border-gray bg-light">
       {outlines.map((item) => {
         return (
-          <OutlinePreview key={item.id} id={item.id} outline={item.outlines} title={item.title} />
+          <OutlinePreview
+            key={item.id}
+            id={item.id}
+            outline={item.outlines}
+            title={item.title}
+          />
         );
       })}
     </aside>

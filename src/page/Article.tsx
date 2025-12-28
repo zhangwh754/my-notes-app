@@ -4,9 +4,5 @@ import Tiptap from "../components/RichEditor/Tiptap";
 export default function Detail() {
   const params = useParams<{ id: string }>();
 
-  return (
-    <div className="p-5">
-      <Tiptap id={params.id} />
-    </div>
-  );
+  return <div className="p-5">{params.id && <Tiptap id={params.id} />}</div>;
 }
