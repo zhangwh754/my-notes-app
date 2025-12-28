@@ -2,48 +2,34 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { getArticle } from "../../data";
-import { useEffect, useRef } from "react";
-// import EditorCommands from "./EditorCommands";
+import { useEffect } from "react";
 
 const Tiptap = ({ id }: { id?: string }) => {
   if (!id) return null;
 
-  const editor = useRef(
-    useEditor({
-      extensions: [StarterKit],
-      editorProps: {
-        attributes: {
-          class:
-            "prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none prose-p:my-0",
-        },
+  const editor = useEditor({
+    extensions: [StarterKit],
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none prose-p:my-0",
       },
-    })
-  );
+    },
+  });
 
-  if (!editor.current) return null;
-
+  // 当 id 变化时更新编辑器内容
   useEffect(() => {
-    const articleResult = getArticle(id);
-    if (articleResult) {
-      editor.current.commands.setContent({
-        type: articleResult.type,
-        content: articleResult.content,
-      });
-
-      editor.current.chain().focus(0);
-
-      // 延迟滚动，确保内容已渲染
-      setTimeout(() => {
-        const mainElement = document.querySelector("main");
-        mainElement && mainElement.scrollTo({ top: 0, behavior: "smooth" });
-      }, 50);
+    if (editor) {
+      const content = getArticle(id);
+      editor.commands.setContent(content || "");
+      const mainElement = document.querySelector("main");
+      mainElement && mainElement.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [id]);
+  }, [id, editor]);
 
   return (
     <>
-      <EditorContent editor={editor.current} />
-      {/* <EditorCommands editor={editor} /> */}
+      <EditorContent editor={editor} />
     </>
   );
 };
