@@ -1,12 +1,9 @@
+import { useMemo } from "react";
 import { Outlet } from "react-router";
 import { parseOutlineFromTiptapJSON } from "../data";
 import Articles from "../data/Article-Content";
 import { OutlinePreview } from "../components/Outline/Outline";
-import { useMemo } from "react";
-
-const SideNav = () => {
-  return <aside className="w-48 bg-dark"></aside>;
-};
+import Navigation from "./Navigation";
 
 const MiddleNav = () => {
   const outlines = useMemo(() => {
@@ -33,7 +30,7 @@ export function NotesLayout() {
   return (
     <div className="flex h-full overflow-hidden">
       {/* 左侧边栏 - 类型导航 */}
-      <SideNav />
+      <Navigation />
 
       {/* 中间栏 - 笔记列表 */}
       <MiddleNav />

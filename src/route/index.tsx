@@ -10,7 +10,7 @@ export default function RouteApp() {
 
         <Route path="/" element={<NotesLayout />}>
           <Route index element={<Home children={"首页"} />} />
-          <Route path="detail/:id" element={<Article children={"详情页"} />} />
+          <Route path="detail/:id" element={<Article />} />
         </Route>
 
         <Route path="/setting" element={<Setting children={"设置页面"} />} />
