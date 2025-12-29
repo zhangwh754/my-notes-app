@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Icon } from "../components/Icon/Icon";
 
 interface MenuItem {
   id: string;
@@ -13,43 +14,60 @@ const mockData: MenuItem[] = [
     id: "1",
     name: "技术笔记",
     children: [
-      { id: "1-1", name: "前端开发" },
-      { id: "1-2", name: "后端开发" },
+      { id: "1-1", name: "前端开发", icon: "web" },
+      { id: "1-2", name: "后端开发", icon: "server" },
     ],
   },
   {
     id: "2",
     name: "生活记录",
     children: [
-      { id: "2-1", name: "旅行" },
-      { id: "2-2", name: "美食" },
-      { id: "2-3", name: "运动" },
+      { id: "2-1", name: "旅行", icon: "trip" },
+      { id: "2-2", name: "美食", icon: "food" },
+      { id: "2-3", name: "运动", icon: "sport" },
     ],
-  },
-  {
-    id: "3",
-    name: "工作资料",
-    children: [{ id: "3-1", name: "会议记录" }],
   },
 ];
 
-function TreeNode({ node, level = 0 }: { node: MenuItem; level?: number }) {
+function TreeNode({
+  node,
+  level = 0,
+  selectedId,
+  onSelect,
+}: {
+  node: MenuItem;
+  level?: number;
+  selectedId?: string;
+  onSelect: (id: string) => void;
+}) {
   const [isExpanded, setIsExpanded] = useState(true);
   const hasChildren = node.children && node.children.length > 0;
+  const isSelected = selectedId === node.id;
 
   return (
     <div className="select-none">
       {/* 节点内容 */}
       <div
-        className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-50 transition-colors border-l-2 border-transparent hover:border-[#E5E7EB]"
+        className={`flex items-center gap-2 px-3 py-2 cursor-pointer transition-all border-l-2 ${
+          isSelected
+            ? "bg-rose-50 border-rose-600"
+            : "hover:bg-gray-50 border-transparent hover:border-[#E5E7EB]"
+        }`}
         style={{ paddingLeft: `${level * 16 + 12}px` }}
-        onClick={() => hasChildren && setIsExpanded(!isExpanded)}
+        onClick={() => {
+          onSelect(node.id);
+          if (hasChildren) {
+            setIsExpanded(!isExpanded);
+          }
+        }}
       >
         {/* 展开/收起图标 */}
         {hasChildren ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4 text-gray-400 transition-transform"
+            className={`w-4 h-4 transition-transform ${
+              isSelected ? "text-rose-600" : "text-gray-400"
+            }`}
             style={{ transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)" }}
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -64,25 +82,39 @@ function TreeNode({ node, level = 0 }: { node: MenuItem; level?: number }) {
           <span className="w-4 h-4" />
         )}
 
-        {/* 图标占位 */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4 text-gray-400"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
-        </svg>
+        {/* 图标 */}
+        {node.icon && (
+          <Icon
+            name={`icon-${node.icon}`}
+            className={
+              isSelected
+                ? "text-rose-600"
+                : "text-gray-500 group-hover:text-rose-600"
+            }
+          />
+        )}
 
         {/* 名称 */}
-        <span className="text-sm text-gray-700">{node.name}</span>
+        <span
+          className={`text-sm ${
+            isSelected ? "text-rose-600 font-medium" : "text-gray-700"
+          }`}
+        >
+          {node.name}
+        </span>
       </div>
 
       {/* 子节点 */}
       {hasChildren && isExpanded && (
         <div className="border-l border-[#E5E7EB] ml-6">
           {node.children!.map((child) => (
-            <TreeNode key={child.id} node={child} level={level + 1} />
+            <TreeNode
+              key={child.id}
+              node={child}
+              level={level + 1}
+              selectedId={selectedId}
+              onSelect={onSelect}
+            />
           ))}
         </div>
       )}
@@ -91,6 +123,8 @@ function TreeNode({ node, level = 0 }: { node: MenuItem; level?: number }) {
 }
 
 export function Navigation() {
+  const [selectedId, setSelectedId] = useState<string>();
+
   return (
     <aside className="w-56 bg-white border-r border-[#E5E7EB] h-full">
       {/* 标题区域 */}
@@ -101,7 +135,12 @@ export function Navigation() {
       {/* 菜单列表 */}
       <div className="py-2">
         {mockData.map((item) => (
-          <TreeNode key={item.id} node={item} />
+          <TreeNode
+            key={item.id}
+            node={item}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+          />
         ))}
       </div>
     </aside>
