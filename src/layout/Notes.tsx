@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { Outlet } from "react-router";
 import { parseOutlineFromTiptapJSON } from "../data";
 import Articles from "../data/Article-Content";
 import { OutlinePreview } from "../components/Outline/Outline";
 import Navigation from "./Navigation";
+import { NotesSkeleton } from "../components/Skeleton/NotesSkeleton";
 
 const MiddleNav = () => {
   const outlines = useMemo(() => {
@@ -27,6 +28,8 @@ const MiddleNav = () => {
 };
 
 export function NotesLayout() {
+  console.log("NotesLayout");
+
   return (
     <div className="flex h-full overflow-hidden">
       {/* 左侧边栏 - 类型导航 */}
@@ -37,7 +40,9 @@ export function NotesLayout() {
 
       {/* 右侧主内容区 - 笔记详情 */}
       <main className="flex-1 bg-light overflow-auto scroll-bar">
-        <Outlet />
+        <Suspense fallback={<NotesSkeleton />}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   );
