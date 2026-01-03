@@ -37,18 +37,19 @@ function TreeNode({
             : "hover:bg-gray-50 border-transparent hover:border-[#E5E7EB]"
         }`}
         style={{ paddingLeft: `${level * 16 + 12}px` }}
-        onClick={() => {
-          onSelect(node.id);
-          if (hasChildren) {
-            setIsExpanded(!isExpanded);
-          }
-        }}
+        onClick={() => onSelect(node.id)}
       >
-        {/* 展开/收起图标 */}
+        {/* 展开/收起图标 - 只有点击图标才切换展开状态 */}
         {hasChildren ? (
           <Icon
             name={isExpanded ? "icon-unfold" : "icon-collapse"}
-            className={`w-4 h-4 transition-transform ${isSelected ? "text-rose-600" : "text-gray-400"}`}
+            className={`w-4 h-4 transition-transform cursor-pointer ${
+              isSelected ? "text-rose-600" : "text-gray-400"
+            }`}
+            onClick={(e) => {
+              e.stopPropagation(); // 阻止事件冒泡到父元素
+              setIsExpanded(!isExpanded);
+            }}
           />
         ) : (
           <span className="w-4 h-4" />
