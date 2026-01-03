@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Icon } from "../components/Icon/Icon";
+import { useQuery } from "@tanstack/react-query";
+import { getTypeTree } from "../services/methods";
+import { arrayToTree } from "../utils";
 
 interface MenuItem {
   id: string;
@@ -7,27 +10,6 @@ interface MenuItem {
   icon?: string;
   children?: MenuItem[];
 }
-
-// 模拟数据用于展示UI
-const mockData: MenuItem[] = [
-  {
-    id: "1",
-    name: "技术笔记",
-    children: [
-      { id: "1-1", name: "前端开发", icon: "web" },
-      { id: "1-2", name: "后端开发", icon: "server" },
-    ],
-  },
-  {
-    id: "2",
-    name: "生活记录",
-    children: [
-      { id: "2-1", name: "旅行", icon: "trip" },
-      { id: "2-2", name: "美食", icon: "food" },
-      { id: "2-3", name: "运动", icon: "sport" },
-    ],
-  },
-];
 
 function TreeNode({
   node,
@@ -68,26 +50,11 @@ function TreeNode({
             className={`w-4 h-4 transition-transform ${isSelected ? "text-rose-600" : "text-gray-400"}`}
           />
         ) : (
-          // <svg
-          //   xmlns="http://www.w3.org/2000/svg"
-          //   className={`w-4 h-4 transition-transform ${
-          //     isSelected ? "text-rose-600" : "text-gray-400"
-          //   }`}
-          //   style={{ transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)" }}
-          //   viewBox="0 0 20 20"
-          //   fill="currentColor"
-          // >
-          //   <path
-          //     fillRule="evenodd"
-          //     d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-          //     clipRule="evenodd"
-          //   />
-          // </svg>
           <span className="w-4 h-4" />
         )}
 
-        {/* 图标 */}
-        {node.icon && (
+        {/* TODO 图标 */}
+        {/* {node.icon && (
           <Icon
             name={`icon-${node.icon}`}
             className={
@@ -96,7 +63,7 @@ function TreeNode({
                 : "text-gray-500 group-hover:text-rose-600"
             }
           />
-        )}
+        )} */}
 
         {/* 名称 */}
         <span
@@ -128,6 +95,16 @@ function TreeNode({
 
 export function Navigation() {
   const [selectedId, setSelectedId] = useState<string>();
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ["treeMenu"],
+    queryFn: () => getTypeTree({ userId: "1" }),
+  });
+
+  // 将后端扁平数据转换为树形结构
+  const treeData = useMemo(() => {
+    if (!data) return [];
+    return arrayToTree(data, { parentId: "parentId" }) as MenuItem[];
+  }, [data]);
 
   return (
     <aside className="w-56 bg-white border-r border-[#E5E7EB] h-full">
@@ -138,14 +115,24 @@ export function Navigation() {
 
       {/* 菜单列表 */}
       <div className="py-2">
-        {mockData.map((item) => (
-          <TreeNode
-            key={item.id}
-            node={item}
-            selectedId={selectedId}
-            onSelect={setSelectedId}
-          />
-        ))}
+        {isPending ? (
+          <div className="px-4 py-2 text-sm text-gray-400">加载中...</div>
+        ) : isError ? (
+          <div className="px-4 py-2 text-sm text-red-400">
+            加载失败: {(error as Error).message}
+          </div>
+        ) : treeData.length === 0 ? (
+          <div className="px-4 py-2 text-sm text-gray-400">暂无分类</div>
+        ) : (
+          treeData.map((item) => (
+            <TreeNode
+              key={item.id}
+              node={item}
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+            />
+          ))
+        )}
       </div>
     </aside>
   );
