@@ -26,12 +26,14 @@ const MiddleNav = () => {
       {outlines.length === 0 ? (
         <div className="px-4 py-2 text-sm text-gray-400">暂无文章</div>
       ) : (
-        outlines.map((item) => (
+        outlines.map((item, index) => (
           <OutlinePreview
             key={item.id}
             id={item.id}
             outline={item.outlines}
             title={item.title}
+            className={`animate__animated animate__fadeIn`}
+            style={{ animationDelay: `${index * 50}ms` }}
           />
         ))
       )}

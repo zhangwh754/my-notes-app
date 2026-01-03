@@ -85,6 +85,7 @@ Key implementation details:
 - **Tailwind CSS 4.1.18** with Vite plugin
 - **DaisyUI 5.5.14** - Component library
 - **TypeScript 5.9.3** with strict mode enabled
+- **Animate.css 4.1.1** - CSS animation library for cross-browser animations
 
 ## Important Notes
 
@@ -93,3 +94,51 @@ Key implementation details:
 - Active article highlighting uses route params comparison
 - Scrollbar styling uses `scroll-bar` utility class (custom implementation)
 - Dark mode classes referenced (`bg-dark`, `bg-light`) but implementation depends on Tailwind config
+
+## Animation
+
+### Animate.css Integration
+
+The project uses [Animate.css](https://animate.style/) for cross-browser CSS animations.
+
+**Import**: Added in `src/main.tsx`
+```tsx
+import "animate.css";
+```
+
+**Usage Pattern**:
+```tsx
+// Basic animation
+<div className="animate__animated animate__fadeIn">...</div>
+
+// With speed modifier
+<div className="animate__animated animate__fadeIn animate__faster">...</div>
+
+// With custom delay via inline style
+<div
+  className="animate__animated animate__fadeIn"
+  style={{ animationDelay: `${index * 50}ms` }}
+>
+  ...
+</div>
+```
+
+**Current Usage**:
+- `Navigation.tsx` - Child nodes fade in when expanded (`animate__fadeIn animate__faster`)
+- `Notes.tsx` (MiddleNav) - Article cards fade in with staggered delays
+- `OutlinePreview` component accepts `className` and `style` props for custom animations
+
+**Available Speed Modifiers**:
+- `animate__slow` - 2s
+- `animate__slower` - 3s
+- `animate__fast` - 800ms
+- `animate__faster` - 500ms
+
+**Common Animations Used**:
+- `animate__fadeIn` - Fade in effect
+- `animate__fadeInDown` - Fade in from top
+- `animate__fadeInUp` - Fade in from bottom
+- `animate__slideInLeft` - Slide from left
+- `animate__slideInRight` - Slide from right
+
+See [Animate.css documentation](https://animate.style/) for full list of available animations.

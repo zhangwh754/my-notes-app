@@ -6,10 +6,14 @@ export function OutlinePreview({
   outline,
   id,
   title,
+  className = "",
+  style,
 }: {
   outline: OutlineItem[];
   id: string;
   title: string;
+  className?: string;
+  style?: React.CSSProperties;
 }) {
   const navigate = useNavigate();
   const params = useParams<{ id: string }>();
@@ -28,7 +32,9 @@ export function OutlinePreview({
         cursor-pointer
         transition-colors
         ${isActive ? "bg-gray-100" : "hover:bg-gray-50"}
+        ${className}
       `}
+      style={style}
       onClick={() => navigate(`/detail/${id}`)}
     >
       {/* 左侧红色指示器 - 仅在激活时显示 */}

@@ -79,7 +79,7 @@ function TreeNode({
 
       {/* 子节点 */}
       {hasChildren && isExpanded && (
-        <div className="border-l border-[#E5E7EB] ml-6">
+        <div className="border-l border-[#E5E7EB] ml-6 animate__animated animate__fadeIn animate__faster">
           {node.children!.map((child) => (
             <TreeNode
               key={child.id}
