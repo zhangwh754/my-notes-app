@@ -1,5 +1,5 @@
 import { Suspense, useMemo } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useSearchParams } from "react-router";
 import { parseOutlineFromTiptapJSON } from "../data";
 import Articles from "../data/Article-Content";
 import { OutlinePreview } from "../components/Outline/Outline";
@@ -7,22 +7,34 @@ import Navigation from "./Navigation";
 import { NotesSkeleton } from "../components/Skeleton/NotesSkeleton";
 
 const MiddleNav = () => {
+  const [searchParams] = useSearchParams();
+  const categoryId = searchParams.get("categoryId");
+
   const outlines = useMemo(() => {
-    return Articles.map((article) => parseOutlineFromTiptapJSON(article));
-  }, []);
+    // 根据 categoryId 过滤文章
+    const filteredArticles = categoryId
+      ? Articles.filter((article) => article.categoryId === categoryId)
+      : Articles; // 如果没有 categoryId，显示所有文章
+
+    return filteredArticles.map((article) =>
+      parseOutlineFromTiptapJSON(article)
+    );
+  }, [categoryId]);
 
   return (
     <aside className="w-56 p-4 flex flex-col border-r border-gray bg-light">
-      {outlines.map((item) => {
-        return (
+      {outlines.length === 0 ? (
+        <div className="px-4 py-2 text-sm text-gray-400">暂无文章</div>
+      ) : (
+        outlines.map((item) => (
           <OutlinePreview
             key={item.id}
             id={item.id}
             outline={item.outlines}
             title={item.title}
           />
-        );
-      })}
+        ))
+      )}
     </aside>
   );
 };

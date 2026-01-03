@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 import { Icon } from "../components/Icon/Icon";
 import { useQuery } from "@tanstack/react-query";
-import { getTypeTree } from "../services/methods";
 import { arrayToTree } from "../utils";
+import { getTypeTree } from "../services/methods";
 
 interface MenuItem {
   id: string;
@@ -94,7 +95,10 @@ function TreeNode({
 }
 
 export function Navigation() {
-  const [selectedId, setSelectedId] = useState<string>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const selectedId = searchParams.get("categoryId") || undefined;
+
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["treeMenu"],
     queryFn: () => getTypeTree({ userId: "1" }),
@@ -105,6 +109,13 @@ export function Navigation() {
     if (!data) return [];
     return arrayToTree(data, { parentId: "parentId" }) as MenuItem[];
   }, [data]);
+
+  const handleSelect = (id: string) => {
+    // 更新 URL 查询参数
+    const params = new URLSearchParams(searchParams);
+    params.set("categoryId", id);
+    navigate(`/?${params.toString()}`, { replace: true });
+  };
 
   return (
     <aside className="w-56 bg-white border-r border-[#E5E7EB] h-full">
@@ -129,7 +140,7 @@ export function Navigation() {
               key={item.id}
               node={item}
               selectedId={selectedId}
-              onSelect={setSelectedId}
+              onSelect={handleSelect}
             />
           ))
         )}

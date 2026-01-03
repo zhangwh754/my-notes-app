@@ -5,6 +5,7 @@ export type Article = {
   title: string;
   type: DocumentType["type"];
   content: JSONContent[];
+  categoryId?: string; // 关联的分类ID
 };
 
 const Articles: Article[] = [
@@ -12,6 +13,7 @@ const Articles: Article[] = [
     id: "1",
     title: "测试",
     type: "doc",
+    categoryId: "16", // 技术分类
     content: [
       {
         type: "heading",
@@ -153,6 +155,7 @@ const Articles: Article[] = [
     id: "2",
     title: "探索Tiptap编辑器",
     type: "doc",
+    categoryId: "16", // 技术分类
     content: [
       {
         type: "paragraph",
@@ -240,6 +243,7 @@ const Articles: Article[] = [
     id: "3",
     title: "Tiptap的高级功能",
     type: "doc",
+    categoryId: "15", // 技术分类
     content: [
       {
         type: "paragraph",
@@ -341,6 +345,7 @@ const Articles: Article[] = [
     id: "4",
     title: "plain text",
     type: "doc",
+    categoryId: "25", // 生活分类
     content: [
       {
         type: "paragraph",
@@ -348,6 +353,239 @@ const Articles: Article[] = [
           {
             type: "text",
             text: "It’s 19871. You can’t turn on a radio, or go to a mall without hearing Olivia Newton-John’s hit song, Physical.",
+          },
+        ],
+      },
+    ],
+  },
+  // 生活分类
+  {
+    id: "5",
+    title: "今日感悟",
+    type: "doc",
+    categoryId: "18",
+    content: [
+      {
+        type: "heading",
+        attrs: {
+          level: 2,
+        },
+        content: [
+          {
+            type: "text",
+            text: "关于生活",
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            text: "生活就像一盒巧克力，你永远不知道下一颗是什么味道。",
+          },
+        ],
+      },
+      {
+        type: "bulletList",
+        content: [
+          {
+            type: "listItem",
+            content: [
+              {
+                type: "paragraph",
+                content: [
+                  {
+                    type: "text",
+                    text: "保持积极的心态",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: "listItem",
+            content: [
+              {
+                type: "paragraph",
+                content: [
+                  {
+                    type: "text",
+                    text: "珍惜当下的时光",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "6",
+    title: "旅行日记",
+    type: "doc",
+    categoryId: "16",
+    content: [
+      {
+        type: "heading",
+        attrs: {
+          level: 2,
+        },
+        content: [
+          {
+            type: "text",
+            text: "日本之旅",
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            text: "今天去了京都的清水寺，景色非常美丽。春天樱花盛开，整个城市都粉粉的。",
+          },
+        ],
+      },
+      {
+        type: "blockquote",
+        content: [
+          {
+            type: "paragraph",
+            content: [
+              {
+                type: "text",
+                text: "旅行不仅是看风景，更是体验不同的文化和生活方式。",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  // 工作分类
+  {
+    id: "7",
+    title: "项目总结",
+    type: "doc",
+    categoryId: "19",
+    content: [
+      {
+        type: "heading",
+        attrs: {
+          level: 2,
+        },
+        content: [
+          {
+            type: "text",
+            text: "Q4 项目回顾",
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            text: "本季度我们完成了三个重要项目，整体进展顺利。",
+          },
+        ],
+      },
+      {
+        type: "bulletList",
+        content: [
+          {
+            type: "listItem",
+            content: [
+              {
+                type: "paragraph",
+                content: [
+                  {
+                    type: "text",
+                    text: "项目A：按时交付",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: "listItem",
+            content: [
+              {
+                type: "paragraph",
+                content: [
+                  {
+                    type: "text",
+                    text: "项目B：超出预期",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: "listItem",
+            content: [
+              {
+                type: "paragraph",
+                content: [
+                  {
+                    type: "text",
+                    text: "项目C：正在进行中",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "8",
+    title: "会议记录",
+    type: "doc",
+    categoryId: "21",
+    content: [
+      {
+        type: "heading",
+        attrs: {
+          level: 2,
+        },
+        content: [
+          {
+            type: "text",
+            text: "产品评审会",
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            text: "参会人员：产品组、设计组、开发组",
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            text: "主要议题：新功能设计评审",
+          },
+        ],
+      },
+      {
+        type: "codeBlock",
+        attrs: {
+          language: "text",
+        },
+        content: [
+          {
+            type: "text",
+            text: "待办事项：\n1. 完善原型设计\n2. 技术方案评审\n3. 开发排期",
           },
         ],
       },
