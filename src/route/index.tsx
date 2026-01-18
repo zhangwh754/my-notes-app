@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import { Login, Register, Home, Setting, Article } from "./component.ts";
 import { NotesLayout } from "../layout/Notes.tsx";
+import ProtectedRoute from "./guard";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <NotesLayout />,
+    element: (
+      <ProtectedRoute>
+        <NotesLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
@@ -27,7 +32,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/setting",
-    element: <Setting children={"设置页面"} />,
+    element: (
+      <ProtectedRoute>
+        <Setting children={"设置页面"} />
+      </ProtectedRoute>
+    ),
   },
 ]);
 

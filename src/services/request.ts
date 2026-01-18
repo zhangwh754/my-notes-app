@@ -1,3 +1,5 @@
+import { getToken } from "../utils/auth";
+
 const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:3001";
 
 if (!BASE_URL) throw new Error("BASE_URL不存在");
@@ -36,12 +38,20 @@ async function request<T>(
   const unwrapResponse = options?.unwrapResponse !== false; // 默认true
 
   try {
+    // 获取token并添加到请求头
+    const token = getToken();
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     const response = await fetch(url, {
       ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options?.headers,
-      },
+      headers,
     });
 
     if (!response.ok) {

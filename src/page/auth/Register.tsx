@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { AlertCircle } from "lucide-react";
-import { onAuthRegister } from "../services/apis/auth";
+import { onAuthRegister } from "../../services/apis/auth";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -34,11 +34,12 @@ export default function Register() {
     setError("");
 
     try {
-      await onAuthRegister({
+      const response = await onAuthRegister({
         username: formData.username,
         email: formData.email,
         password: formData.password,
       });
+
       navigate("/login");
     } catch (err) {
       setError(err instanceof Error ? err.message : "注册失败，请稍后重试");

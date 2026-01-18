@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { AlertCircle } from "lucide-react";
-import { onAuthLogin } from "../services/apis/auth";
+import { onAuthLogin } from "../../services/apis/auth";
+import { setToken } from "../../utils/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -31,7 +32,8 @@ export default function Login() {
     setLocalStorage();
 
     try {
-      await onAuthLogin(formData);
+      const response = await onAuthLogin(formData);
+      setToken(response.token);
       navigate("/");
     } catch (err) {
       console.log(err);
