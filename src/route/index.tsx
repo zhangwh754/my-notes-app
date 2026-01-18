@@ -1,11 +1,15 @@
 import { createBrowserRouter } from "react-router";
-import { Login, Home, Setting, Article } from "./component.ts";
+import { Login, Register, Home, Setting, Article } from "./component.ts";
 import { NotesLayout } from "../layout/Notes.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: <Login children={"登录页面"} />,
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "/",
