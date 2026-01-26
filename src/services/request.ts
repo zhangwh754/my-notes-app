@@ -1,4 +1,4 @@
-import { getToken } from "../utils/auth";
+import { getToken, logout } from "../utils/auth";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:3001";
 
@@ -40,10 +40,11 @@ async function request<T>(
   try {
     // 获取token并添加到请求头
     const token = getToken();
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      ...options?.headers,
     };
+
+    if (options?.headers) Object.assign(headers, options.headers);
 
     if (token) {
       headers.Authorization = `Bearer ${token}`;
@@ -53,6 +54,14 @@ async function request<T>(
       ...options,
       headers,
     });
+
+    // 处理401未授权状态码
+    if (response.status === 401) {
+      // 清除token并跳转到登录页
+      logout();
+      window.location.href = "/login";
+      throw new Error("未授权，请重新登录");
+    }
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
