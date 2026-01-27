@@ -35,11 +35,15 @@ export interface NotesListResponse {
 /**
  * 根据分类ID获取笔记列表
  * @param params.id 分类ID
- * @returns Promise<Note[]>
+ * @param params.page 页码（默认1）
+ * @param params.limit 每页数量（默认10）
+ * @returns Promise<NotesListResponse>
  */
 export const getNotesByType = async (params: {
   id: string;
-}): Promise<Note[]> => {
+  page?: number;
+  limit?: number;
+}): Promise<NotesListResponse> => {
   const query = buildQuery(params);
   return request(`/api/note-types/notes?${query}`);
 };
