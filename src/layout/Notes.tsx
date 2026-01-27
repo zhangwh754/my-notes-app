@@ -1,5 +1,5 @@
 import { Suspense, useState, useEffect, useRef, useCallback } from "react";
-import { Outlet, useSearchParams } from "react-router";
+import { Outlet, useParams } from "react-router";
 import { parseOutlineFromMarkdown } from "../data";
 import { OutlinePreview } from "../components/Outline/Outline";
 import Navigation from "./Navigation";
@@ -8,8 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getNotesByType, type Note } from "../services/methods";
 
 const MiddleNav = () => {
-  const [searchParams] = useSearchParams();
-  const categoryId = searchParams.get("categoryId");
+  const { categoryId } = useParams<{ categoryId?: string }>();
 
   // 分页状态
   const [page, setPage] = useState(1);

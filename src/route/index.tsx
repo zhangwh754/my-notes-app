@@ -25,7 +25,11 @@ const router = createBrowserRouter([
         element: <Home children={"首页"} />,
       },
       {
-        path: "detail/:id",
+        path: "category/:categoryId",
+        element: <Article />,
+      },
+      {
+        path: "category/:categoryId/article/:articleId",
         element: <Article />,
       },
     ],

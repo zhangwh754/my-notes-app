@@ -16,8 +16,17 @@ export function OutlinePreview({
   style?: React.CSSProperties;
 }) {
   const navigate = useNavigate();
-  const params = useParams<{ id: string }>();
-  const isActive = params.id === id;
+  const { categoryId, articleId } = useParams<{
+    categoryId?: string;
+    articleId?: string;
+  }>();
+  const isActive = articleId === id;
+
+  const handleClick = () => {
+    if (categoryId) {
+      navigate(`/category/${categoryId}/article/${id}`);
+    }
+  };
 
   return (
     <div
@@ -35,7 +44,7 @@ export function OutlinePreview({
         ${className}
       `}
       style={style}
-      onClick={() => navigate(`/detail/${id}`)}
+      onClick={handleClick}
     >
       {/* 左侧红色指示器 - 仅在激活时显示 */}
       {isActive && (

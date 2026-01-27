@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 import { Icon } from "../components/Icon/Icon";
 import { useQuery } from "@tanstack/react-query";
 import { arrayToTree } from "../utils";
@@ -97,8 +97,9 @@ function TreeNode({
 
 export function Navigation() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const selectedId = searchParams.get("categoryId") || undefined;
+  const location = useLocation();
+  const { categoryId } = useParams<{ categoryId?: string }>();
+  const selectedId = categoryId;
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["treeMenu"],
@@ -112,10 +113,8 @@ export function Navigation() {
   }, [data]);
 
   const handleSelect = (id: string) => {
-    // 更新 URL 查询参数
-    const params = new URLSearchParams(searchParams);
-    params.set("categoryId", id);
-    navigate(`/?${params.toString()}`, { replace: true });
+    // 跳转到分类路由
+    navigate(`/category/${id}`, { replace: true });
   };
 
   return (
