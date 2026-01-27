@@ -102,11 +102,13 @@ Key implementation details:
 The project uses [Animate.css](https://animate.style/) for cross-browser CSS animations.
 
 **Import**: Added in `src/main.tsx`
+
 ```tsx
 import "animate.css";
 ```
 
 **Usage Pattern**:
+
 ```tsx
 // Basic animation
 <div className="animate__animated animate__fadeIn">...</div>
@@ -124,17 +126,20 @@ import "animate.css";
 ```
 
 **Current Usage**:
+
 - `Navigation.tsx` - Child nodes fade in when expanded (`animate__fadeIn animate__faster`)
 - `Notes.tsx` (MiddleNav) - Article cards fade in with staggered delays
 - `OutlinePreview` component accepts `className` and `style` props for custom animations
 
 **Available Speed Modifiers**:
+
 - `animate__slow` - 2s
 - `animate__slower` - 3s
 - `animate__fast` - 800ms
 - `animate__faster` - 500ms
 
 **Common Animations Used**:
+
 - `animate__fadeIn` - Fade in effect
 - `animate__fadeInDown` - Fade in from top
 - `animate__fadeInUp` - Fade in from bottom
